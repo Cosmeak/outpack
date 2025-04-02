@@ -20,7 +20,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { createClient } from "@/lib/supabase/client";
-import { RegisterForm, registerValidator } from "@/validator/auth.validator";
+import { RegisterForm, registerValidator } from "@/validators/auth.validator";
 
 export default function Register() {
   const form = useForm({
