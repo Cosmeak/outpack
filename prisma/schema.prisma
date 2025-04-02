@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserParam {
+  id            Int      @id
+  user_id       String
+  role          String   @default("user")
+  currency      String   @default("EUR")
+  weight_unit   String   @default("metric")
+  distance_unit String   @default("km")
+  created_at    DateTime @default(now())
+  updated_at    DateTime @default(now())
+}
+
+model Brand {
+  id         Int       @id @default(autoincrement())
+  name       String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  Product    Product[]
+}
+
+model Product {
+  id         Int      @id @default(autoincrement())
+  brand_id   Int
+  name       String
+  weight     Float?
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  brand Brand  @relation(fields: [brand_id], references: [id])
+  Item  Item[]
+}
+
+model Category {
+  id         Int      @id @default(autoincrement())
+  name       String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  Item Item[]
+}
+
+model Item {
+  id              Int       @id @default(autoincrement())
+  user_id         String
+  product_id      Int
+  category_id     Int
+  name            String?
+  quantity        Int       @default(1)
+  rate            Int?
+  comment         String?
+  is_consumable   Boolean   @default(false)
+  purchased_from  String?
+  purchased_price Float?
+  purchased_at    DateTime?
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @default(now())
+  archived_at     DateTime  @default(now())
+
+  product   Product     @relation(fields: [product_id], references: [id])
+  category  Category    @relation(fields: [category_id], references: [id])
+  ItemField ItemField[]
+}
+
+model ItemField {
+  id         Int      @id @default(autoincrement())
+  item_id    Int
+  key        String
+  value      String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  item Item @relation(fields: [item_id], references: [id])
+}

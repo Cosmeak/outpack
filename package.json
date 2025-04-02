@@ -7,10 +7,16 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "prisma:generate": "dotenv -e .env.local -- prisma generate",
+    "prisma:dev": "dotenv -e .env.local -- prisma migrate dev",
+    "prisma:deploy": "dotenv -e .env.local -- prisma migrate deploy",
+    "prisma:push": "dotenv -e .env.local -- prisma db push",
+    "prisma:reset": "dotenv -e .env.local -- prisma migrate reset"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
+    "@prisma/client": "^6.5.0",
     "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-slot": "^1.1.2",
     "@supabase/ssr": "^0.6.1",
@@ -34,9 +40,11 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv-cli": "^8.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
     "husky": "^9.1.7",
+    "prisma": "^6.5.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
