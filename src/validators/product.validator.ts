@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { zfd } from "zod-form-data";
+import { brandSchema } from "./brand.validator";
 
 export const productSchema = {
   id: z.number().int().optional(),
@@ -8,6 +9,7 @@ export const productSchema = {
   weight: z.number().optional(),
   created_at: z.string().optional(),
   updated_at: z.string().optional(),
+  brand: z.object(brandSchema).optional(),
 };
 
 export const productValidator = z.object(productSchema);

@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { Product } from "@/validators/product.validator";
 
 export async function getProducts() {
-  const products = await prisma.product.findMany();
+  const products = await prisma.product.findMany({ include: { brand: true } });
 
   return products;
 }
