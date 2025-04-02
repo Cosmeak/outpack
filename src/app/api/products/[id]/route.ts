@@ -1,4 +1,4 @@
-import { getBrandById } from "@/services/brand.service";
+import { getProductById } from "@/services/product.service";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -7,8 +7,8 @@ export async function GET(
 ) {
   try {
     const id = parseInt((await params).id);
-    const brands = await getBrandById(id);
-    return NextResponse.json({ data: brands }, { status: 200 });
+    const product = await getProductById(id);
+    return NextResponse.json({ data: product }, { status: 200 });
   } catch (error) {
     return NextResponse.json({}, { status: 500, statusText: error as string });
   }
