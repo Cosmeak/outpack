@@ -22,7 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { redirect } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { LoginForm, loginValidator } from "@/validator/auth.validator";
+import { LoginForm, loginValidator } from "@/validators/auth.validator";
 
 export default function Login() {
   const form = useForm({
