@@ -11,7 +11,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import {
   Form,
   FormControl,
@@ -21,22 +20,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { createClient } from "@/lib/supabase/client";
+import { RegisterForm, registerValidator } from "@/validator/auth.validator";
 
 export default function Register() {
-  const formSchema = z
-    .object({
-      username: z.string(),
-      email: z.string().email(),
-      password: z.string(),
-      confirm_password: z.string(),
-    })
-    .refine((self) => self.password == self.confirm_password, {
-      message: "Password don't match.",
-      path: ["confirm_password"],
-    });
-
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(registerValidator),
     defaultValues: {
       username: "",
       email: "",
@@ -45,7 +33,7 @@ export default function Register() {
     },
   });
 
-  const handleSubmit = async (formData) => {
+  const handleSubmit = async (formData: RegisterForm) => {
     const supabase = createClient();
     const { data, error } = await supabase.auth.signUp({
       email: formData.email,

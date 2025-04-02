@@ -21,24 +21,19 @@ import { createClient } from "@/lib/supabase/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { redirect } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { toast } from "sonner";
+import { LoginForm, loginValidator } from "@/validator/auth.validator";
 
 export default function Login() {
-  const formSchema = z.object({
-    email: z.string().email(),
-    password: z.string(),
-  });
-
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(loginValidator),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const handleSubmit = async (formData) => {
+  const handleSubmit = async (formData: LoginForm) => {
     const supabase = createClient();
     const { data, error } = await supabase.auth.signInWithPassword({
       email: formData.email,
