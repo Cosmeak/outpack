@@ -37,6 +37,7 @@ import { createClient } from "@/lib/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { Textarea } from "./ui/textarea";
 import { Prisma } from "@prisma/client";
+import { useForm } from "react-hook-form";
 
 type Product = Prisma.ProductGetPayload<{ include: { brand: true } }>;
 
