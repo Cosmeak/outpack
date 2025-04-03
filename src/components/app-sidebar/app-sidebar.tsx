@@ -1,7 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { BackpackIcon } from "lucide-react";
+import {
+  Backpack,
+  BackpackIcon,
+  LucideIcon,
+  Package,
+  ShoppingBag,
+} from "lucide-react";
 import Link from "next/link";
 import {
   Sidebar,
@@ -12,9 +18,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
 import { UserMenu } from "./user-menu";
@@ -26,6 +29,7 @@ interface Data {
 interface NavItem {
   title: string;
   url: string;
+  icon?: LucideIcon;
   items?: NavItem[];
 }
 
@@ -33,26 +37,19 @@ interface NavItem {
 const data: Data = {
   navMain: [
     {
-      title: "My Inventory",
+      title: "Inventory",
       url: "/inventory",
+      icon: Package,
     },
     {
       title: "Backpacks",
       url: "/backpacks",
-      items: [
-        {
-          title: "My backpack",
-          url: "/backpacks",
-        },
-        {
-          title: "Create a backpack",
-          url: "/backpacks/create",
-        },
-      ],
+      icon: Backpack,
     },
     {
-      title: "Products List",
+      title: "Products",
       url: "/products",
+      icon: ShoppingBag,
     },
   ],
 };
@@ -83,25 +80,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenu className="gap-2">
             {data.navMain.map((item) => (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
-                  <Link href={item.url} className="font-medium">
-                    {item.title}
-                  </Link>
+                <SidebarMenuButton asChild isActive={item.url == pathname}>
+                  <a href={item.url}>
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                  </a>
                 </SidebarMenuButton>
-                {item.items?.length ? (
-                  <SidebarMenuSub className="ml-0 border-l-0 px-1.5">
-                    {item.items.map((item) => (
-                      <SidebarMenuSubItem key={item.title}>
-                        <SidebarMenuSubButton
-                          asChild
-                          isActive={item.url == pathname}
-                        >
-                          <Link href={item.url}>{item.title}</Link>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    ))}
-                  </SidebarMenuSub>
-                ) : null}
               </SidebarMenuItem>
             ))}
           </SidebarMenu>
