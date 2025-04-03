@@ -5,7 +5,4 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const BASE_URL =
-  process.env.NEXT_PUBLIC_NODE_ENV === "production"
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-    : "http://localhost:3000";
+export const BASE_URL = window.location.protocol + "//" + window.location.host;
