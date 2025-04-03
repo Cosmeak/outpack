@@ -16,9 +16,9 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Item, itemValidator } from "@/validators/item.validator";
+import { itemValidator } from "@/validators/item.validator";
 import { BASE_URL, cn } from "@/lib/utils";
 import {
   Popover,
@@ -40,6 +40,7 @@ import { Textarea } from "./ui/textarea";
 import { Prisma } from "@prisma/client";
 
 type Product = Prisma.ProductGetPayload<{ include: { brand: true } }>;
+type Item = Prisma.ItemUncheckedCreateWithoutProductInput;
 
 export function ItemFormDialog() {
   const form = useForm({
@@ -65,7 +66,16 @@ export function ItemFormDialog() {
     }
   }, [searchedProductsInput, user]);
 
-  async function handleSubmit(formData: Item) {
+  function handleSubmit(formData: {
+    name: string;
+    product_id: number;
+    quantity?: number | undefined;
+    rate?: number | undefined;
+    comment?: string | undefined;
+    purchased_from?: string | undefined;
+    purchased_price?: number | undefined;
+    purchased_at?: string | undefined;
+  }) {
     fetch(`${BASE_URL}/api/items`, {
       method: "POST",
       body: JSON.stringify(formData),
