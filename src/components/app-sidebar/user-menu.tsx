@@ -22,11 +22,12 @@ import Link from "next/link";
 import ThemeToggle from "@/components/app-sidebar/theme-toggle";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
+import { User } from "@supabase/supabase-js";
 
 export function UserMenu() {
   const { isMobile } = useSidebar();
   const supabase = createClient();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>();
 
   useEffect(() => {
     async function fetchPosts() {
