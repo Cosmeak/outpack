@@ -16,7 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
-import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { itemValidator } from "@/validators/item.validator";
 import { BASE_URL, cn } from "@/lib/utils";
@@ -40,7 +39,6 @@ import { Textarea } from "./ui/textarea";
 import { Prisma } from "@prisma/client";
 
 type Product = Prisma.ProductGetPayload<{ include: { brand: true } }>;
-type Item = Prisma.ItemUncheckedCreateWithoutProductInput;
 
 export function ItemFormDialog() {
   const form = useForm({
