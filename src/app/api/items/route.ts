@@ -14,7 +14,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const formData = itemFormValidator.parse(await request.json());
-    const item = insertItem(formData);
+    const item = await insertItem(formData);
     return NextResponse.json({ data: item }, { status: 200 });
   } catch (error) {
     console.log(error);
