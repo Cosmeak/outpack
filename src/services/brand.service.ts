@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/prisma";
-import { Brand } from "@/validators/brand.validator";
+import { Prisma } from "@prisma/client";
+
+type Brand = Prisma.BrandUncheckedCreateWithoutProductInput;
 
 export async function getBrands() {
   const brands = prisma.brand.findMany();

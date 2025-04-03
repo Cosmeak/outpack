@@ -9,30 +9,38 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { BASE_URL } from "@/lib/utils";
-import { Product } from "@/validators/product.validator";
+import { Prisma } from "@prisma/client";
+import { LoaderPinwheel } from "lucide-react";
 import { useEffect, useState } from "react";
 
+type Product = Prisma.ProductGetPayload<{ include: { brand: true } }>;
+
 export default function Products() {
+  const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState<Product[] | []>([]);
   useEffect(() => {
+    setIsLoading(true);
     fetch(`${BASE_URL}/api/products`)
       .then((response) => response.json())
-      .then((data) => setProducts(data.data));
+      .then((data) => {
+        setProducts(data.data);
+        setIsLoading(false);
+      });
   }, []);
 
   return (
-    <div className="overflow-hidden rounded-lg border">
-      <Table>
-        <TableHeader className="sticky top-0 z-10 bg-muted">
-          <TableRow>
-            <TableHead className="w-[100px]">Brand</TableHead>
-            <TableHead>Product Name</TableHead>
-            <TableHead>Global Rate</TableHead>
-            <TableHead />
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {products.map((product: Product) => (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-[100px]">Brand</TableHead>
+          <TableHead>Product Name</TableHead>
+          <TableHead>Global Rate</TableHead>
+          <TableHead />
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {products.length ? (
+          products.map((product: Product) => (
             <TableRow key={product.id}>
               <TableCell className="font-medium">
                 {product?.brand ? product.brand.name : "-"}
@@ -41,9 +49,22 @@ export default function Products() {
               <TableCell>-</TableCell>
               <TableCell className="text-right">-</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell
+              colSpan={6}
+              className="text-center font-medium p-4 text-base"
+            >
+              {isLoading ? (
+                <LoaderPinwheel className="animate-spin mx-auto" />
+              ) : (
+                "No product are available, retry later."
+              )}
+            </TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
   );
 }

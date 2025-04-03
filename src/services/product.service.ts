@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/prisma";
-import { Product } from "@/validators/product.validator";
+import { Prisma } from "@prisma/client";
+
+type Product = Prisma.ProductUncheckedCreateWithoutItemInput;
 
 export async function getProducts() {
   const products = await prisma.product.findMany({ include: { brand: true } });
@@ -45,6 +47,7 @@ export async function insertProduct(rawProduct: Product) {
   const product = prisma.product.create({
     data: {
       brand_id: rawProduct.brand_id,
+      category: rawProduct.category,
       name: rawProduct.name,
       weight: rawProduct?.weight ?? null,
     },
