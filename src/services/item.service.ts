@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
-import { Item } from "@/validators/item.validator";
+import { Prisma } from "@prisma/client";
+
+type Item = Prisma.ItemUncheckedCreateInput;
 
 export async function getItems() {
   const supabase = await createClient();
