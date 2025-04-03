@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { Prisma } from "@prisma/client";
 
-type Item = Prisma.ItemUncheckedCreateInput;
+type Item = Omit<Prisma.ItemUncheckedCreateInput, "user_id">;
 
 export async function getItems() {
   const supabase = await createClient();
